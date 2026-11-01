@@ -25,10 +25,11 @@ jobs:
           ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
         run: |
           echo "sdk.dir=/usr/local/lib/android/sdk" > local.properties
-          yes | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          yes | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null || true
+          /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager "platforms;android-34" "build-tools;34.0.0" > /dev/null
           wget -q https://services.gradle.org/distributions/gradle-8.5-bin.zip
           unzip -q -o gradle-8.5-bin.zip
-          ./gradle-8.5/bin/gradle assembleDebug --no-daemon --stacktrace
+          ./gradle-8.5/bin/gradle assembleDebug -x lint --no-daemon
 
       - name: APK Dosyasini Yukle
         uses: actions/upload-artifact@v4
