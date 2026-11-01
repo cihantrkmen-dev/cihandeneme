@@ -7,10 +7,10 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
-      - name: Kodu İndir
+      - name: Kodu Indir
         uses: actions/checkout@v4
 
       - name: JDK 17 Kur
@@ -19,10 +19,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Gradle Indir ve APK Derle
+      - name: Android SDK Kur
+        uses: android-actions/setup-android@v3
+
+      - name: SDK Lisanslarini Onayla ve APK Derle
         run: |
+          yes | sdkmanager --licenses || true
           wget -q https://services.gradle.org/distributions/gradle-8.5-bin.zip
-          unzip -q gradle-8.5-bin.zip
+          unzip -q -o gradle-8.5-bin.zip
           ./gradle-8.5/bin/gradle assembleDebug --no-daemon --stacktrace
 
       - name: APK Dosyasini Yukle
