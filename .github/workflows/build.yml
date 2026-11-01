@@ -19,12 +19,13 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Android SDK Kur
-        uses: android-actions/setup-android@v3
-
-      - name: SDK Lisanslarini Onayla ve APK Derle
+      - name: APK Derle
+        env:
+          ANDROID_HOME: /usr/local/lib/android/sdk
+          ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
         run: |
-          yes | sdkmanager --licenses || true
+          echo "sdk.dir=/usr/local/lib/android/sdk" > local.properties
+          yes | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --licenses || true
           wget -q https://services.gradle.org/distributions/gradle-8.5-bin.zip
           unzip -q -o gradle-8.5-bin.zip
           ./gradle-8.5/bin/gradle assembleDebug --no-daemon --stacktrace
