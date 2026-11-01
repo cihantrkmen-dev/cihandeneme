@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1. CİHAZ ROLÜNÜ SEÇİN (OTOMATİK EŞLEŞME)"
+            android:textStyle="bold"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/btnStartServer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SIM Kartlı Ana Cihaz Olarak Başlat (Sunucu)" />
+
+        <EditText
+            android:id="@+id/etServerIp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="IP Otomatik Bulunur (Veya Elle Girin)"
+            android:text=""
+            android:layout_marginTop="6dp" />
+
+        <Button
+            android:id="@+id/btnConnectClient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="İkinci Cihaz Olarak Otomatik Bağlan (İstemci)" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#CCCCCC"
+            android:layout_marginVertical="12dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2. BLUETOOTH HFP &amp; SES KONTROLÜ"
+            android:textStyle="bold"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/btnToggleBtSco"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bluetooth HFP (SCO) Ses Kanalını Aç/Kapat" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnAnswerCall"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Çağrıyı Aç" />
+
+            <Button
+                android:id="@+id/btnEndCall"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Çağrıyı Kapat" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#CCCCCC"
+            android:layout_marginVertical="12dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="3. UZAKTAN ARAMA VE SMS GÖNDER"
+            android:textStyle="bold"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/etTargetNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Telefon Numarası (Örn: 05551234567)"
+            android:inputType="phone" />
+
+        <EditText
+            android:id="@+id/etSmsMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="SMS Mesajınız" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnSendSms"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="SMS Gönder" />
+
+            <Button
+                android:id="@+id/btnMakeCall"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Numarayı Ara" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CANLI DURUM VE KAYITLAR (LOG):"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp" />
+
+        <TextView
+            android:id="@+id/tvLogs"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:background="#EEEEEE"
+            android:padding="8dp"
+            android:scrollbars="vertical"
+            android:text="Sistem hazır...\n"
+            android:textSize="13sp" />
+
+    </LinearLayout>
+</ScrollView>
