@@ -33,8 +33,9 @@ class BluetoothAudioHelper(private val context: Context, private val onLog: (Str
             adapter?.getProfileProxy(context, object : BluetoothProfile.ServiceListener {
                 override fun onServiceConnected(profile: Int, proxy: BluetoothProfile) {
                     if (profile == BluetoothProfile.HEADSET) {
-                        bluetoothHeadset = proxy as BluetoothHeadset
-                        val count = bluetoothHeadset?.connectedDevices?.size ?: 0
+                        val headset = proxy as BluetoothHeadset
+                        bluetoothHeadset = headset
+                        val count = headset.connectedDevices?.size ?: 0
                         onLog("Bluetooth HFP Profili Hazır. Bağlı Cihaz: $count")
                     }
                 }
@@ -83,17 +84,19 @@ class BluetoothAudioHelper(private val context: Context, private val onLog: (Str
         audioManager.isSpeakerphoneOn = true
 
         audioScope.launch {
-            var recorder: AudioRecord? = null
-            var socket: DatagramSocket? = null
+            var recorderRef: AudioRecord? = null
+            var socketRef: DatagramSocket? = null
             try {
-                recorder = AudioRecord(
+                val recorder = AudioRecord(
                     MediaRecorder.AudioSource.VOICE_COMMUNICATION,
                     sampleRate,
                     AudioFormat.CHANNEL_IN_MONO,
                     AudioFormat.ENCODING_PCM_16BIT,
                     bufferSize
                 )
-                socket = DatagramSocket()
+                recorderRef = recorder
+                val socket = DatagramSocket()
+                socketRef = socket
                 val address = InetAddress.getByName(targetIp)
                 val buffer = ByteArray(bufferSize)
 
@@ -107,16 +110,16 @@ class BluetoothAudioHelper(private val context: Context, private val onLog: (Str
             } catch (e: Exception) {
                 e.printStackTrace()
             } finally {
-                try { recorder?.stop(); recorder?.release() } catch (_: Exception) {}
-                try { socket?.close() } catch (_: Exception) {}
+                try { recorderRef?.stop(); recorderRef?.release() } catch (_: Exception) {}
+                try { socketRef?.close() } catch (_: Exception) {}
             }
         }
 
         audioScope.launch {
-            var track: AudioTrack? = null
-            var socket: DatagramSocket? = null
+            var trackRef: AudioTrack? = null
+            var socketRef: DatagramSocket? = null
             try {
-                track = AudioTrack(
+                val track = AudioTrack(
                     AudioManager.STREAM_VOICE_CALL,
                     sampleRate,
                     AudioFormat.CHANNEL_OUT_MONO,
@@ -124,7 +127,9 @@ class BluetoothAudioHelper(private val context: Context, private val onLog: (Str
                     bufferSize,
                     AudioTrack.MODE_STREAM
                 )
-                socket = DatagramSocket(AUDIO_PORT).apply { soTimeout = 2000 }
+                trackRef = track
+                val socket = DatagramSocket(AUDIO_PORT).apply { soTimeout = 2000 }
+                socketRef = socket
                 val buffer = ByteArray(bufferSize)
 
                 track.play()
@@ -138,8 +143,8 @@ class BluetoothAudioHelper(private val context: Context, private val onLog: (Str
             } catch (e: Exception) {
                 e.printStackTrace()
             } finally {
-                try { track?.stop(); track?.release() } catch (_: Exception) {}
-                try { socket?.close() } catch (_: Exception) {}
+                try { trackRef?.stop(); trackRef?.release() } catch (_: Exception) {}
+                try { socketRef?.close() } catch (_: Exception) {}
             }
         }
     }

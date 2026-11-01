@@ -50,9 +50,10 @@ class AutoDiscoveryHelper(
         }
 
         scope.launch {
-            var socket: DatagramSocket? = null
+            var socketRef: DatagramSocket? = null
             try {
-                socket = DatagramSocket().apply { broadcast = true }
+                val socket = DatagramSocket().apply { broadcast = true }
+                socketRef = socket
                 val message = "SIM_RELAY_SERVER_HERE".toByteArray()
                 val broadcastAddress = InetAddress.getByName("255.255.255.255")
 
@@ -64,7 +65,7 @@ class AutoDiscoveryHelper(
             } catch (e: Exception) {
                 e.printStackTrace()
             } finally {
-                try { socket?.close() } catch (_: Exception) {}
+                try { socketRef?.close() } catch (_: Exception) {}
             }
         }
     }
@@ -104,12 +105,13 @@ class AutoDiscoveryHelper(
                 setReferenceCounted(true)
                 acquire()
             }
-            var socket: DatagramSocket? = null
+            var socketRef: DatagramSocket? = null
             try {
-                socket = DatagramSocket(DISCOVERY_UDP_PORT).apply {
+                val socket = DatagramSocket(DISCOVERY_UDP_PORT).apply {
                     broadcast = true
                     soTimeout = 3500
                 }
+                socketRef = socket
                 val buffer = ByteArray(1024)
                 val packet = DatagramPacket(buffer, buffer.size)
                 socket.receive(packet)
@@ -121,7 +123,7 @@ class AutoDiscoveryHelper(
                 }
             } catch (_: Exception) {
             } finally {
-                try { socket?.close() } catch (_: Exception) {}
+                try { socketRef?.close() } catch (_: Exception) {}
                 if (lock.isHeld) lock.release()
                 stopClientDiscovery()
             }
